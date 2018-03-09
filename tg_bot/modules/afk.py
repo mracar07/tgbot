@@ -22,7 +22,7 @@ def afk(bot: Bot, update: Update):
         reason = ""
 
     sql.set_afk(update.effective_user.id, reason)
-    update.effective_message.reply_text("{} is now AFK!".format(update.effective_user.first_name))
+    update.effective_message.reply_text("{} şuan meşgul!".format(update.effective_user.first_name))
 
 
 @run_async
@@ -34,7 +34,7 @@ def no_longer_afk(bot: Bot, update: Update):
 
     res = sql.rm_afk(user.id)
     if res:
-        update.effective_message.reply_text("{} is no longer AFK!".format(update.effective_user.first_name))
+        update.effective_message.reply_text("{} artık meşgul değil!".format(update.effective_user.first_name))
 
 
 @run_async
@@ -47,9 +47,9 @@ def reply_afk(bot: Bot, update: Update):
             user = sql.check_afk_status(user_id)
             if user and user.is_afk:
                 if not user.reason:
-                    res = "{} is AFK!".format(ent.user.first_name)
+                    res = "{} şuan meşgul!".format(ent.user.first_name)
                 else:
-                    res = "{} is AFK! says its because of:\n{}".format(ent.user.first_name, user.reason)
+                    res = "{} şuan meşgul! Sebep:\n{}".format(ent.user.first_name, user.reason)
                 message.reply_text(res)
 
     elif message.entities and message.parse_entities([MessageEntity.MENTION]):
@@ -63,9 +63,9 @@ def reply_afk(bot: Bot, update: Update):
             if user and user.is_afk:
                 chat = bot.get_chat(user_id)
                 if not user.reason:
-                    res = "{} is AFK!".format(chat.first_name)
+                    res = "{} şuan meşgul!".format(chat.first_name)
                 else:
-                    res = "{} is AFK!\nReason: {}".format(chat.first_name, user.reason)
+                    res = "{} şuan meşgul!\nSebep: {}".format(chat.first_name, user.reason)
                 message.reply_text(res)
 
     else:
@@ -73,10 +73,10 @@ def reply_afk(bot: Bot, update: Update):
 
 
 __help__ = """
- - /afk <reason>: mark yourself as AFK.
- - brb <reason>: same as the afk command - but not a command.
+ - /afk <sebep>: kendini meşgul olarak işaretle.
+ - brb <sebep>: afk komutu ile aynı - ama komut değil.
 
-When marked as AFK, any mentions will be replied to with a message to say you're not available!
+AFK olarak işaretlendiğinde, uygun olmadığınızı söyleyen bir mesajla herhangi bir görüşme yanıtlanacaktır.!
 """
 
 __mod_name__ = "AFK"
