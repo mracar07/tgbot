@@ -123,8 +123,8 @@ def start(bot: Bot, update: Update, args: List[str]):
                 else:
                     send_settings(match.group(1), update.effective_user.id, True)
 
-            elif args[0][1:].isdigit() and "rules" in IMPORTED:
-                IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
+            elif args[0][1:].isdigit() and "kurallar" in IMPORTED:
+                IMPORTED["kurallar"].send_rules(update, args[0], from_pm=True)
 
         else:
             first_name = update.effective_user.first_name
