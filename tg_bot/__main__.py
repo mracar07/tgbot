@@ -217,7 +217,7 @@ def get_help(bot: Bot, update: Update):
     # ONLY send help in PM
     if chat.type != chat.PRIVATE:
 
-        update.effective_message.reply_text("Olası komutların listesini almak için Özel Mesajda bana ulaşın.",
+        update.effective_message.reply_text("Olası komutların listesini almak için *Yardım* butonuna basarak bana ulaşın.",
                                             reply_markup=InlineKeyboardMarkup(
                                                 [[InlineKeyboardButton(text="Yardım",
                                                                        url="t.me/{}?start=help".format(
