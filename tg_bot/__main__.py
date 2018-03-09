@@ -250,7 +250,7 @@ def send_settings(chat_id, user_id, user=False):
         if CHAT_SETTINGS:
             chat_name = dispatcher.bot.getChat(chat_id).title
             dispatcher.bot.send_message(user_id,
-                                        text="Hangi modülü {} grubu için kontrol etmek istiyorsun?".format(
+                                        text="Hangi modülü *{}* grubu için kontrol etmek istiyorsun?".format(
                                             chat_name),
                                         reply_markup=InlineKeyboardMarkup(
                                             paginate_modules(0, CHAT_SETTINGS, "stngs", chat=chat_id)))
