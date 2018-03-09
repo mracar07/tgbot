@@ -258,14 +258,14 @@ def __stats__():
 def __user_info__(user_id):
     is_gbanned = sql.is_user_gbanned(user_id)
 
-    text = "Globally banned: <b>{}</b>"
+    text = "Küresel Ban Durumu: <b>{}</b>"
     if is_gbanned:
-        text = text.format("Yes")
+        text = text.format("Evet")
         user = sql.get_gbanned_user(user_id)
         if user.reason:
-            text += "\nReason: {}".format(html.escape(user.reason))
+            text += "\nSebep: {}".format(html.escape(user.reason))
     else:
-        text = text.format("No")
+        text = text.format("Hayır")
     return text
 
 
@@ -281,7 +281,7 @@ __help__ = """
 *Sadece yöneticiler:*
  - /gbanstat <on/off/yes/no>: Global yasakların grubunuz üzerindeki etkisini devre dışı bırakır veya geçerli ayarlarınızı gösterir.
  
-Küresel yasaklar olarak da bilinen Gbans, bot sahipleri tarafından spam gruplarını tüm gruplara yasaklamak için kullanılıyor. Bu korunmaya yardımcı olur \
+Küresel yasaklar olarak da bilinen Gbans, bot sahipleri tarafından spam gruplarını(kişilerini) tüm gruplara yasaklamak için kullanılıyor. Bu korunmaya yardımcı olur \
 Spamcılar ve diğer toksik kişilerden sizi korur. \
 """
 
