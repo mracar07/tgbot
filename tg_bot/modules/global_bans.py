@@ -282,8 +282,7 @@ __help__ = """
  - /gbanstat <on/off/yes/no>: Global yasakların grubunuz üzerindeki etkisini devre dışı bırakır veya geçerli ayarlarınızı gösterir.
  
 Küresel yasaklar olarak da bilinen Gbans, bot sahipleri tarafından spam gruplarını tüm gruplara yasaklamak için kullanılıyor. Bu korunmaya yardımcı olur \
-Spamcılar ve diğer toksik kişilerden sizi korur. Aşağıdaki komut ile mevcut durumu görebilirsiniz... \
-/gbanstat
+Spamcılar ve diğer toksik kişilerden sizi korur. \
 """
 
 __mod_name__ = "Küresel Banlar"
