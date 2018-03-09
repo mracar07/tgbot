@@ -448,8 +448,6 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
-{}
-
 *Sadece yöneticiler:*
  - /welcome <on/off>: karşılama mesajlarını etkinleştir / devre dışı bırak. Arg olmadan kullanılırsa, geçerli ayarları gösterir.
  - /goodbye <on/off>: Hoşçakal mesajlarını etkinleştir / devre dışı bırak. Arg olmadan kullanılırsa, geçerli ayarları gösterir.
