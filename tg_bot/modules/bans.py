@@ -27,24 +27,24 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
     user_id, reason = extract_user_and_text(message, args)
 
     if not user_id:
-        message.reply_text("You don't seem to be referring to a user.")
+        message.reply_text("Bir kullanıcıya atıfta bulunmuyorsunuz.")
         return ""
 
     try:
         member = chat.get_member(user_id)
     except BadRequest as excp:
         if excp.message == "User not found":
-            message.reply_text("I can't seem to find this user")
+            message.reply_text("Bu kullanıcıyı bulamıyorum")
             return ""
         else:
             raise
 
     if is_user_ban_protected(chat, user_id, member):
-        message.reply_text("I really wish I could ban admins...")
+        message.reply_text("Keşke yöneticileri yasaklayabilseydim...")
         return ""
 
     if user_id == bot.id:
-        update.effective_message.reply_text("I'm not gonna BAN myself, are you crazy?")
+        update.effective_message.reply_text("Kendimi YASAKLAMAYACAĞIM, sen çıldırdın mı??")
         return ""
 
     log = "<b>{}:</b>" \
@@ -53,7 +53,7 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
           "\n<b>User:</b> {}".format(html.escape(chat.title), mention_html(user.id, user.first_name),
                                      mention_html(member.user.id, member.user.first_name))
     if reason:
-        log += "\n<b>Reason:</b> {}".format(reason)
+        log += "\n<b>Sebep:</b> {}".format(reason)
 
     try:
         update.effective_chat.kick_member(user_id)
@@ -64,13 +64,13 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
     except BadRequest as excp:
         if excp.message == "Reply message not found":
             # Do not reply
-            message.reply_text('Banned!', quote=False)
+            message.reply_text('Yasaklandı!', quote=False)
             return log
         else:
             LOGGER.warning(update)
             LOGGER.exception("ERROR banning user %s in chat %s (%s) due to %s", user_id, chat.title, chat.id,
                              excp.message)
-            message.reply_text("Well damn, I can't ban that user.")
+            message.reply_text("Kahretsin, o kullanıcıyı yasaklayamam.")
 
     return ""
 
@@ -94,17 +94,17 @@ def kick(bot: Bot, update: Update, args: List[str]) -> str:
         member = chat.get_member(user_id)
     except BadRequest as excp:
         if excp.message == "User not found":
-            message.reply_text("I can't seem to find this user")
+            message.reply_text("Bu kullanıcıyı bulamıyorum")
             return ""
         else:
             raise
 
     if is_user_ban_protected(chat, user_id):
-        message.reply_text("I really wish I could kick admins...")
+        message.reply_text("Keşke yöneticileri atabilseydim...")
         return ""
 
     if user_id == bot.id:
-        update.effective_message.reply_text("Yeahhh I'm not gonna do that")
+        update.effective_message.reply_text("Evet, bunu yapmayacağım *SALAK*")
         return ""
 
     res = update.effective_chat.unban_member(user_id)  # unban on current user = kick
@@ -118,12 +118,12 @@ def kick(bot: Bot, update: Update, args: List[str]) -> str:
                                          mention_html(user.id, user.first_name),
                                          mention_html(member.user.id, member.user.first_name))
         if reason:
-            log += "\n<b>Reason:</b> {}".format(reason)
+            log += "\n<b>Sebep:</b> {}".format(reason)
 
         return log
 
     else:
-        message.reply_text("Well damn, I can't kick that user.")
+        message.reply_text("Kahretsin, o kullanıcıyı atamam.")
 
     return ""
 
@@ -134,14 +134,14 @@ def kick(bot: Bot, update: Update, args: List[str]) -> str:
 def kickme(bot: Bot, update: Update):
     user_id = update.effective_message.from_user.id
     if is_user_admin(update.effective_chat, user_id):
-        update.effective_message.reply_text("I wish I could... but you're an admin.")
+        update.effective_message.reply_text("Keşke yapabilseydim ... ama sen bir yöneticisin.")
         return
 
     res = update.effective_chat.unban_member(user_id)  # unban on current user = kick
     if res:
-        update.effective_message.reply_text("No problem.")
+        update.effective_message.reply_text("Sorun değil.")
     else:
-        update.effective_message.reply_text("Huh? I can't :/")
+        update.effective_message.reply_text("Ha? Yapamam:/")
 
 
 @run_async
@@ -163,21 +163,21 @@ def unban(bot: Bot, update: Update, args: List[str]) -> str:
         member = chat.get_member(user_id)
     except BadRequest as excp:
         if excp.message == "User not found":
-            message.reply_text("I can't seem to find this user")
+            message.reply_text("Bu kullanıcıyı bulamıyorum")
             return ""
         else:
             raise
 
     if user_id == bot.id:
-        update.effective_message.reply_text("How would I unban myself if I wasn't here...?")
+        update.effective_message.reply_text("Burada olmasaydım kendi yasağımı nasıl kaldırırdım...?")
         return ""
 
     if is_user_in_chat(chat, user_id):
-        update.effective_message.reply_text("Why are you trying to unban someone that's already in the chat?")
+        update.effective_message.reply_text("Neden zaten sohbetde olan birisini engelini açmaya çalışıyorsun??")
         return ""
 
     update.effective_chat.unban_member(user_id)
-    message.reply_text("Yep, this user can join!")
+    message.reply_text("Evet, artık bu kullanıcı katılabilir!")
 
     log = "<b>{}:</b>" \
           "\n#UNBANNED" \
@@ -186,21 +186,21 @@ def unban(bot: Bot, update: Update, args: List[str]) -> str:
                                      mention_html(user.id, user.first_name),
                                      mention_html(member.user.id, member.user.first_name))
     if reason:
-        log += "\n<b>Reason:</b> {}".format(reason)
+        log += "\n<b>Sebep:</b> {}".format(reason)
 
     return log
 
 
 __help__ = """
- - /kickme: kicks the user who issued the command
+ - /kickme: komutu veren kullanıcıyı sohbetten atar
 
-*Admin only:*
- - /ban <userhandle>: bans a user. (via handle, or reply)
- - /unban <userhandle>: unbans a user. (via handle, or reply)
- - /kick <userhandle>: kicks a user, (via handle, or reply)
+*Sadece yöneticiler:*
+ - /ban <userhandle>: kullanıcıyı yasaklar. (Kullanıcı adı veya mesajı cevapla)
+ - /unban <userhandle>: kullanıcının yasağını kaldır (Kullanıcı adı veya mesajı cevapla)
+ - /kick <userhandle>: kullanıcı sohbetten at (Kullanıcı adı veya mesajı cevapla)
 """
 
-__mod_name__ = "Bans"
+__mod_name__ = "Yasaklamalar"
 
 BAN_HANDLER = CommandHandler("ban", ban, pass_args=True, filters=Filters.group)
 KICK_HANDLER = CommandHandler("kick", kick, pass_args=True, filters=Filters.group)
