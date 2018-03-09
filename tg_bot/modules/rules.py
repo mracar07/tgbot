@@ -33,7 +33,7 @@ def send_rules(update, chat_id, from_pm=False):
             raise
 
     rules = sql.get_rules(chat_id)
-    text = "*{}* Grubu için kurallar:\n\n{}".format(escape_markdown(chat.title), rules)
+    text = "The rules for *{}* are:\n\n{}".format(escape_markdown(chat.title), rules)
 
     if from_pm and rules:
         bot.send_message(user.id, text, parse_mode=ParseMode.MARKDOWN)
@@ -94,14 +94,14 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
- - /rules: Bu sohbet için kuralları al
+ - /rules: get the rules for this chat.
 
 *Admin only:*
- - /setrules <Kurallar buraya>: Bu sohbet için kuralları ayarla
- - /clearrules: Bu sohbet için kuralları temizle
+ - /setrules <your rules here>: set the rules for this chat.
+ - /clearrules: clear the rules for this chat.
 """
 
-__mod_name__ = "Kurallar"
+__mod_name__ = "Rules"
 
 GET_RULES_HANDLER = CommandHandler("rules", get_rules, filters=Filters.group)
 SET_RULES_HANDLER = CommandHandler("setrules", set_rules, filters=Filters.group)
