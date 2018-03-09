@@ -250,7 +250,7 @@ def send_settings(chat_id, user_id, user=False):
         if CHAT_SETTINGS:
             chat_name = dispatcher.bot.getChat(chat_id).title
             dispatcher.bot.send_message(user_id,
-                                        text="Hangi modülü {} neden kontrol etmek istediğiniz?".format(
+                                        text="Hangi modülü {} grubu için kontrol etmek istiyorsun?".format(
                                             chat_name),
                                         reply_markup=InlineKeyboardMarkup(
                                             paginate_modules(0, CHAT_SETTINGS, "stngs", chat=chat_id)))
@@ -330,10 +330,10 @@ def get_settings(bot: Bot, update: Update):
     # ONLY send settings in PM
     if chat.type != chat.PRIVATE:
         if is_user_admin(chat, user.id):
-            text = "Bu sohbetin ayarlarını ve sizin ayarlarınızı almak için buraya tıklayın."
+            text = "Bu sohbetin ayarlarını almak için buraya tıklayın."
             msg.reply_text(text,
                            reply_markup=InlineKeyboardMarkup(
-                               [[InlineKeyboardButton(text="Settings",
+                               [[InlineKeyboardButton(text="Ayarlar",
                                                       url="t.me/{}?start=stngs_{}".format(
                                                           bot.username, chat.id))]]))
         else:
