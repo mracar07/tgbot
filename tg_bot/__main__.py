@@ -330,7 +330,7 @@ def get_settings(bot: Bot, update: Update):
     # ONLY send settings in PM
     if chat.type != chat.PRIVATE:
         if is_user_admin(chat, user.id):
-            text = "Bu sohbetin ayarlarını almak için buraya tıklayın."
+            text = "Bu sohbetin ayarlarını almak için *Ayarlar* butonuna tıklayın."
             msg.reply_text(text,
                            reply_markup=InlineKeyboardMarkup(
                                [[InlineKeyboardButton(text="Ayarlar",
