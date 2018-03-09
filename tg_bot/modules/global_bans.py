@@ -69,8 +69,8 @@ def gban(bot: Bot, update: Update, args: List[str]):
     banner = update.effective_user  # type: Optional[User]
     send_to_list(bot, SUDO_USERS + SUPPORT_USERS,
                  "{} Gbanlıyor. Gbanlanan kullanıcı: {} "
-                 "because:\n{}".format(mention_html(banner.id, banner.first_name),
-                                       mention_html(user_chat.id, user_chat.first_name), reason or "No reason given"),
+                 "Sebep:\n{}".format(mention_html(banner.id, banner.first_name),
+                                       mention_html(user_chat.id, user_chat.first_name), reason or "sebep belirtmedi"),
                  html=True)
 
     sql.gban_user(user_id, user_chat.username or user_chat.first_name, reason)
