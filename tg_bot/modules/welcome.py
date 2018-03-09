@@ -35,40 +35,40 @@ def send(update, message, keyboard, backup_message):
         update.effective_message.reply_text(message, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard)
     except IndexError:
         update.effective_message.reply_text(markdown_parser(backup_message +
-                                                            "\nNote: the current message was "
-                                                            "invalid due to markdown issues. Could be "
-                                                            "due to the user's name."),
+                                                            "\nNot: Mevcut mesaj "
+                                                            "Markdown sorunları nedeniyle geçersiz. "
+                                                            "Kullanıcının adı nedeniyle olabilir."),
                                             parse_mode=ParseMode.MARKDOWN)
     except KeyError:
         update.effective_message.reply_text(markdown_parser(backup_message +
-                                                            "\nNote: the current message is "
-                                                            "invalid due to an issue with some misplaced "
-                                                            "curly brackets. Please update"),
+                                                            "\nNot: Mevcut mesaj "
+                                                            "bazı yanlış yerleştirilmiş parantez sorunları nedeniyle geçersiz "
+                                                            "Lütfen güncelle"),
                                             parse_mode=ParseMode.MARKDOWN)
     except BadRequest as excp:
         if excp.message == "Button_url_invalid":
             update.effective_message.reply_text(markdown_parser(backup_message +
-                                                                "\nNote: the current message has an invalid url in "
+                                                                "\nNot: Mevcut mesajın içindeki bir butonda geçersiz bir URL var "
                                                                 "one of its buttons. Please update."),
                                                 parse_mode=ParseMode.MARKDOWN)
         elif excp.message == "Unsupported url protocol":
             update.effective_message.reply_text(markdown_parser(backup_message +
-                                                                "\nNote: the current message has buttons which use "
-                                                                "url protocols that are unsupported by telegram. "
-                                                                "Please update."),
+                                                                "\nNot: Mevcut mesaj "
+                                                                "telegram tarafından desteklenmeyen URL protokolleri var. "
+                                                                "Lütfen güncelle"),
                                                 parse_mode=ParseMode.MARKDOWN)
         elif excp.message == "Wrong url host":
             update.effective_message.reply_text(markdown_parser(backup_message +
-                                                                "\nNote: the current message has some bad urls. "
-                                                                "Please update."),
+                                                                "\nNot: Mevcut mesajın bazı hatalı URL'leri var. "
+                                                                "Lütfen güncelle"),
                                                 parse_mode=ParseMode.MARKDOWN)
             LOGGER.warning(message)
             LOGGER.warning(keyboard)
             LOGGER.exception("Could not parse! got invalid url host errors")
         else:
             update.effective_message.reply_text(markdown_parser(backup_message +
-                                                                "\nNote: An error occured when sending the custom "
-                                                                "message. Please update."),
+                                                                "\nNot: Özel mesaj gönderilirken bir sorun oluştu. "
+                                                                "Lütfen güncelle."),
                                                 parse_mode=ParseMode.MARKDOWN)
             LOGGER.exception()
 
@@ -83,7 +83,7 @@ def new_member(bot: Bot, update: Update):
         for new_mem in new_members:
             # Give the owner a special welcome
             if new_mem.id == OWNER_ID:
-                update.effective_message.reply_text("Master is in the houseeee, let's get this party started!")
+                update.effective_message.reply_text("Hoşgeldin Başkan. Partiyi başlatalım mı?")
                 continue
 
             # Don't welcome yourself
@@ -139,7 +139,7 @@ def left_member(bot: Bot, update: Update):
 
             # Give the owner a special goodbye
             if left_mem.id == OWNER_ID:
-                update.effective_message.reply_text("RIP Master")
+                update.effective_message.reply_text("Görüşürüz Başkan")
                 return
 
             # if media goodbye, use appropriate function for it
@@ -185,7 +185,7 @@ def welcome(bot: Bot, update: Update, args: List[str]):
     if len(args) == 0:
         pref, welcome_m, welcome_type = sql.get_welc_pref(chat.id)
         update.effective_message.reply_text(
-            "This chat has it's welcome setting set to: `{}`.\n*The welcome message is:*".format(pref),
+            "Bu sohbet şuna ayarlandı: `{}`.\n*Şuanki hoşgeldin mesajı:*".format(pref),
             parse_mode=ParseMode.MARKDOWN)
 
         if welcome_type == sql.Types.BUTTON_TEXT:
@@ -201,15 +201,15 @@ def welcome(bot: Bot, update: Update, args: List[str]):
     elif len(args) >= 1:
         if args[0].lower() in ("on", "yes"):
             sql.set_welc_preference(str(chat.id), True)
-            update.effective_message.reply_text("I'll be polite!")
+            update.effective_message.reply_text("Kibar olurum!")
 
         elif args[0].lower() in ("off", "no"):
             sql.set_welc_preference(str(chat.id), False)
-            update.effective_message.reply_text("I'm sulking, not saying hello anymore.")
+            update.effective_message.reply_text("Suratsızım, artık merhaba demiyorum.")
 
         else:
             # idek what you're writing, say yes or no
-            update.effective_message.reply_text("I understand 'on/yes' or 'off/no' only!")
+            update.effective_message.reply_text("Ben sadece 'on/yes' veya 'off/no' anlıyorum!")
 
 
 @run_async
@@ -220,7 +220,7 @@ def goodbye(bot: Bot, update: Update, args: List[str]):
     if len(args) == 0:
         pref, goodbye_m, goodbye_type = sql.get_gdbye_pref(chat.id)
         update.effective_message.reply_text(
-            "This chat has it's goodbye setting set to: `{}`.\n*The goodbye message is:*".format(pref),
+            "Bu sohbet için, elveda ayarı: `{}`.\n*Şuan ayrılma mesajı:*".format(pref),
             parse_mode=ParseMode.MARKDOWN)
 
         if goodbye_type == sql.Types.BUTTON_TEXT:
@@ -237,15 +237,15 @@ def goodbye(bot: Bot, update: Update, args: List[str]):
     elif len(args) >= 1:
         if args[0].lower() in ("on", "yes"):
             sql.set_gdbye_preference(str(chat.id), True)
-            update.effective_message.reply_text("I'll be sorry when people leave!")
+            update.effective_message.reply_text("Insanlar ayrılırken üzgün olacağım!")
 
         elif args[0].lower() in ("off", "no"):
             sql.set_gdbye_preference(str(chat.id), False)
-            update.effective_message.reply_text("They leave, they're dead to me.")
+            update.effective_message.reply_text("Ayrıldılar, benim için öldüler.")
 
         else:
             # idek what you're writing, say yes or no
-            update.effective_message.reply_text("I understand 'on/yes' or 'off/no' only!")
+            update.effective_message.reply_text("Ben sadece 'on/yes' veya 'off/no' anlıyorum!")
 
 
 @run_async
@@ -293,11 +293,11 @@ def set_welcome(bot: Bot, update: Update) -> str:
         data_type = sql.Types.VIDEO
 
     else:
-        msg.reply_text("You didn't specify what to reply with!")
+        msg.reply_text("Neyle yanıt vereceğinizi belirtmediniz!")
         return ""
 
     sql.set_custom_welcome(chat.id, content, data_type, buttons)
-    update.effective_message.reply_text("Successfully set custom welcome message!")
+    update.effective_message.reply_text("Özel karşılama mesajı başarıyla ayarlandı!")
 
     return "<b>{}:</b>" \
            "\n#SET_WELCOME" \
@@ -313,7 +313,7 @@ def reset_welcome(bot: Bot, update: Update) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     sql.set_custom_welcome(chat.id, sql.DEFAULT_WELCOME, sql.Types.TEXT)
-    update.effective_message.reply_text("Successfully reset welcome message to default!")
+    update.effective_message.reply_text("Karşılama mesajını varsayılan olarak sıfırlandı!")
     return "<b>{}:</b>" \
            "\n#RESET_WELCOME" \
            "\n<b>Admin:</b> {}" \
@@ -366,11 +366,11 @@ def set_goodbye(bot: Bot, update: Update) -> str:
         data_type = sql.Types.VIDEO
 
     else:
-        msg.reply_text("You didn't specify what to reply with!")
+        msg.reply_text("Ne cevap vereceğinizi belirtmedinizh!")
         return ""
 
     sql.set_custom_gdbye(chat.id, content, data_type, buttons)
-    update.effective_message.reply_text("Successfully set custom goodbye message!")
+    update.effective_message.reply_text("Özel hoşçakal mesajı başarıyla ayarlandı!")
     return "<b>{}:</b>" \
            "\n#SET_GOODBYE" \
            "\n<b>Admin:</b> {}" \
@@ -385,7 +385,7 @@ def reset_goodbye(bot: Bot, update: Update) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     sql.set_custom_gdbye(chat.id, sql.DEFAULT_GOODBYE, sql.Types.TEXT)
-    update.effective_message.reply_text("Successfully reset goodbye message to default!")
+    update.effective_message.reply_text("Hoşçakal mesajını varsayılan olarak sıfırlandı!")
     return "<b>{}:</b>" \
            "\n#RESET_GOODBYE" \
            "\n<b>Admin:</b> {}" \
@@ -393,29 +393,29 @@ def reset_goodbye(bot: Bot, update: Update) -> str:
                                                  mention_html(user.id, user.first_name))
 
 
-WELC_HELP_TXT = "Your group's welcome/goodbye messages can be personalised in multiple ways. If you want the messages" \
-                " to be individually generated, like the default welcome message is, you can use *these* variables:\n" \
-                " - `{{first}}`: this represents the user's *first* name\n" \
-                " - `{{last}}`: this represents the user's *last* name. Defaults to *first name* if user has no " \
-                "last name.\n" \
-                " - `{{fullname}}`: this represents the user's *full* name. Defaults to *first name* if user has no " \
-                "last name.\n" \
-                " - `{{username}}`: this represents the user's *username*. Defaults to a *mention* of the user's " \
-                "first name if has no username.\n" \
-                " - `{{mention}}`: this simply *mentions* a user - tagging them with their first name.\n" \
-                " - `{{id}}`: this represents the user's *id*\n" \
-                " - `{{count}}`: this represents the user's *member number*.\n" \
-                " - `{{chatname}}`: this represents the *current chat name*.\n" \
-                "\nEach variable MUST be surrounded by `{{}}` to be replaced.\n" \
-                "Welcome messages also support markdown, so you can make any elements bold/italic/code/links. " \
-                "Buttons are also supported, so you can make your welcomes look awesome with some nice intro " \
-                "buttons.\n" \
-                "To create a button linking to your rules, use this: `[Rules](buttonurl://t.me/{}?start=group_id)`. " \
-                "Simply replace `group_id` with your group's id, which can be obtained via /id, and you're good to " \
-                "go. Note that group ids are usually preceded by a `-` sign; this is required, so please don't " \
-                "remove it.\n" \
-                "If you're feeling fun, you can even set images/gifs/videos/voice messages as the welcome message by " \
-                "replying to the desired media, and calling /setwelcome.".format(dispatcher.bot.username)
+WELC_HELP_TXT = "Grubumuzun karşılama / güle güle mesajları çok yönlü kişiselleştirilebilir. Bu mesajları ayarlamak istiyorsan" \
+                " Varsayılan karşılama mesajı gibi bireysel olarak oluşturulmak için * bu * değişkenleri kullanabilirsiniz:\n" \
+                " - `{{first}}`: Bu, kullanıcının * ilk * adını temsil eder\n" \
+                " - `{{last}}`: Bu kullanıcının * son * adını temsil eder. " \
+                "Eğer sahip değilse ilk adı kullanır.\n" \
+                " - `{{fullname}}`: Bu kullanıcının * tam * adını temsil eder. Kullanıcı adı yoksa * ilk ad * için varsayılan değerdir " \
+                ".\n" \
+                " - `{{username}}`: Bu kullanıcının * kullanıcı adını * temsil eder. Kullanıcının * bahsine * göre belirlenen değerler" \
+                "KUllanıcı adı yoksa ilk isim kullanılır.\n" \
+                " - `{{mention}}`: Bu basitçe * bir kullanıcı - ilk adlarıyla onları etiketlediğinden bahseder.\n" \
+                " - `{{id}}`: Bu kullanıcının *id*\n" \
+                " - `{{count}}`: Bu, kullanıcının * üye numarasını temsil eder *.\n" \
+                " - `{{chatname}}`: bu * geçerli sohbet adını temsil eder *.\n" \
+                "\nHer değişken, değiştirilmek üzere {{}} `ile çevrelenmelidir ZORUNLU.\n" \
+                "Hoş geldiniz mesajları ayrıca işaretlemeyi de destekler, böylece herhangi bir öğeyi kalın / italik / kod / bağlantılar yapabilirsiniz." \
+                "Düğmeler de destekleniyor, bu yüzden hoş intro ile hoş görünmenizi sağlayabilirsiniz." \
+                ".\n" \
+                "Kurallarınıza bağlanan bir düğme oluşturmak için bunu kullanın: `[Rules](buttonurl://t.me/{}?start=group_id)`. " \
+                "'Group_id' ifadesini grubunuzun kimliğiyle değiştirin. Bu, /id yoluyla edinilebilir. " \
+                "Grup kimlikleri genellikle bir `-` işareti ile önceliğe sahiptir; bu gerekli, lütfen " \
+                "bunu kaldırmayın.\n" \
+                "Eğlenceli hissediyorsanız, hoş geldiniz mesajı olarak görüntüleri / gifleri / videoları / sesli mesajları bile ayarlayabilirsiniz " \
+                "İstenen medyaya /setwelcome ile cevap vererek ayarlayabilirsiniz".format(dispatcher.bot.username)
 
 
 @run_async
@@ -450,18 +450,18 @@ def __chat_settings__(chat_id, user_id):
 __help__ = """
 {}
 
-*Admin only:*
- - /welcome <on/off>: enable/disable welcome messages. If used with no arg, shows current settings.
- - /goodbye <on/off>: enable/disable goodbye messages. If used with no arg, shows current settings.
- - /setwelcome <sometext>: set a custom welcome message. If used replying to media, uses that media.
- - /setgoodbye <sometext>: set a custom goodbye message. If used replying to media, uses that media.
- - /resetwelcome: reset to the default welcome message.
- - /resetgoodbye: reset to the default goodbye message.
-
- - /welcomehelp: view more formatting information for custom welcome/goodbye messages.
+*Sadece yöneticiler:*
+ - /welcome <on/off>: karşılama mesajlarını etkinleştir / devre dışı bırak. Arg olmadan kullanılırsa, geçerli ayarları gösterir.
+ - /goodbye <on/off>: Hoşçakal mesajlarını etkinleştir / devre dışı bırak. Arg olmadan kullanılırsa, geçerli ayarları gösterir.
+ - /setwelcome <sometext>: özel bir karşılama mesajı ayarlayın. Medyaya yanıt olarak kullanılıyorsa, o medyayı kullanır.
+ - /setgoodbye <sometext>: özel bir hoşçakal mesajı ayarla. Medyaya yanıt olarak kullanılıyorsa, o medyayı kullanır.
+ - /resetwelcome: Varsayılan karşılama mesajına sıfırla.
+ - /resetgoodbye: Varsayılan hoşçakal mesajına sıfırla.
+ 
+ - /welcomehelp: özel karşılama / güle güle iletileri için daha fazla biçimlendirme bilgisi görüntüleyin.
 """.format(WELC_HELP_TXT)
 
-__mod_name__ = "Welcomes/Goodbyes"
+__mod_name__ = "Hoşgeldin/Veda Mesajları"
 
 NEW_MEM_HANDLER = MessageHandler(Filters.status_update.new_chat_members, new_member)
 LEFT_MEM_HANDLER = MessageHandler(Filters.status_update.left_chat_member, left_member)
