@@ -132,7 +132,7 @@ def ungban(bot: Bot, update: Update, args: List[str]):
 
     banner = update.effective_user  # type: Optional[User]
 
-    message.reply_text("Bana bir saniye ver. *{}* banını kaldırıyorum, tamamen.".format(user_chat.first_name))
+    message.reply_text("Bana bir saniye ver. *{}* kullanıcısının banını kaldırıyorum, tamamen.".format(user_chat.first_name))
 
     send_to_list(bot, SUDO_USERS + SUPPORT_USERS,
                  "{} Ungbanlıyor. Ungbanlanan kullanıcı: {}".format(mention_html(banner.id, banner.first_name),
