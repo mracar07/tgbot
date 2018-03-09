@@ -393,29 +393,29 @@ def reset_goodbye(bot: Bot, update: Update) -> str:
                                                  mention_html(user.id, user.first_name))
 
 
-WELC_HELP_TXT = "Grubumuzun karşılama / güle güle mesajları çok yönlü kişiselleştirilebilir. Bu mesajları ayarlamak istiyorsan" \
-                " Varsayılan karşılama mesajı gibi bireysel olarak oluşturulmak için * bu * değişkenleri kullanabilirsiniz:\n" \
-                " - `{{first}}`: Bu, kullanıcının * ilk * adını temsil eder\n" \
-                " - `{{last}}`: Bu kullanıcının * son * adını temsil eder. " \
-                "Eğer sahip değilse ilk adı kullanır.\n" \
-                " - `{{fullname}}`: Bu kullanıcının * tam * adını temsil eder. Kullanıcı adı yoksa * ilk ad * için varsayılan değerdir " \
-                ".\n" \
-                " - `{{username}}`: Bu kullanıcının * kullanıcı adını * temsil eder. Kullanıcının * bahsine * göre belirlenen değerler" \
-                "KUllanıcı adı yoksa ilk isim kullanılır.\n" \
-                " - `{{mention}}`: Bu basitçe * bir kullanıcı - ilk adlarıyla onları etiketlediğinden bahseder.\n" \
-                " - `{{id}}`: Bu kullanıcının *id*\n" \
-                " - `{{count}}`: Bu, kullanıcının * üye numarasını temsil eder *.\n" \
-                " - `{{chatname}}`: bu * geçerli sohbet adını temsil eder *.\n" \
-                "\nHer değişken, değiştirilmek üzere {{}} `ile çevrelenmelidir ZORUNLU.\n" \
-                "Hoş geldiniz mesajları ayrıca işaretlemeyi de destekler, böylece herhangi bir öğeyi kalın / italik / kod / bağlantılar yapabilirsiniz." \
-                "Düğmeler de destekleniyor, bu yüzden hoş intro ile hoş görünmenizi sağlayabilirsiniz." \
-                ".\n" \
-                "Kurallarınıza bağlanan bir düğme oluşturmak için bunu kullanın: `[Rules](buttonurl://t.me/{}?start=group_id)`. " \
-                "'Group_id' ifadesini grubunuzun kimliğiyle değiştirin. Bu, /id yoluyla edinilebilir. " \
-                "Grup kimlikleri genellikle bir `-` işareti ile önceliğe sahiptir; bu gerekli, lütfen " \
-                "bunu kaldırmayın.\n" \
-                "Eğlenceli hissediyorsanız, hoş geldiniz mesajı olarak görüntüleri / gifleri / videoları / sesli mesajları bile ayarlayabilirsiniz " \
-                "İstenen medyaya /setwelcome ile cevap vererek ayarlayabilirsiniz".format(dispatcher.bot.username)
+WELC_HELP_TXT = "Your group's welcome/goodbye messages can be personalised in multiple ways. If you want the messages" \
+                " to be individually generated, like the default welcome message is, you can use *these* variables:\n" \
+                " - `{{first}}`: this represents the user's *first* name\n" \
+                " - `{{last}}`: this represents the user's *last* name. Defaults to *first name* if user has no " \
+                "last name.\n" \
+                " - `{{fullname}}`: this represents the user's *full* name. Defaults to *first name* if user has no " \
+                "last name.\n" \
+                " - `{{username}}`: this represents the user's *username*. Defaults to a *mention* of the user's " \
+                "first name if has no username.\n" \
+                " - `{{mention}}`: this simply *mentions* a user - tagging them with their first name.\n" \
+                " - `{{id}}`: this represents the user's *id*\n" \
+                " - `{{count}}`: this represents the user's *member number*.\n" \
+                " - `{{chatname}}`: this represents the *current chat name*.\n" \
+                "\nEach variable MUST be surrounded by `{{}}` to be replaced.\n" \
+                "Welcome messages also support markdown, so you can make any elements bold/italic/code/links. " \
+                "Buttons are also supported, so you can make your welcomes look awesome with some nice intro " \
+                "buttons.\n" \
+                "To create a button linking to your rules, use this: `[Rules](buttonurl://t.me/{}?start=group_id)`. " \
+                "Simply replace `group_id` with your group's id, which can be obtained via /id, and you're good to " \
+                "go. Note that group ids are usually preceded by a `-` sign; this is required, so please don't " \
+                "remove it.\n" \
+                "If you're feeling fun, you can even set images/gifs/videos/voice messages as the welcome message by " \
+                "replying to the desired media, and calling /setwelcome.".format(dispatcher.bot.username)
 
 
 @run_async
