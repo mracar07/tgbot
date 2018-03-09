@@ -201,7 +201,7 @@ def get_id(bot: Bot, update: Update, args: List[str]):
                 parse_mode=ParseMode.MARKDOWN)
         else:
             user = bot.get_chat(user_id)
-            update.effective_message.reply_text("{}Isimli kullanıcının ID'si: `{}`.".format(escape_markdown(user.first_name), user.id),
+            update.effective_message.reply_text("{} Isimli kullanıcının ID'si: `{}`.".format(escape_markdown(user.first_name), user.id),
                                                 parse_mode=ParseMode.MARKDOWN)
     else:
         chat = update.effective_chat  # type: Optional[Chat]
