@@ -22,7 +22,6 @@ Selam {}, Ben {}! Ben [bu harika insan](tg://user?id={}) tarafından oluşturula
 
 Kullanılabilir komutları  /help yazarak görebilirsin.
 
-Hakkımdaki güncellemelere ulaşmak için @delikadir_channel kanalını takip edebilirsin ;)
 """
 
 HELP_STRINGS = """
