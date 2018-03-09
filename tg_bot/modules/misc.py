@@ -201,16 +201,16 @@ def get_id(bot: Bot, update: Update, args: List[str]):
                 parse_mode=ParseMode.MARKDOWN)
         else:
             user = bot.get_chat(user_id)
-            update.effective_message.reply_text("{}'s id is `{}`.".format(escape_markdown(user.first_name), user.id),
+            update.effective_message.reply_text("{}Isimli kullanıcının ID'si: `{}`.".format(escape_markdown(user.first_name), user.id),
                                                 parse_mode=ParseMode.MARKDOWN)
     else:
         chat = update.effective_chat  # type: Optional[Chat]
         if chat.type == "private":
-            update.effective_message.reply_text("Your id is `{}`.".format(chat.id),
+            update.effective_message.reply_text("Senin ID'n `{}`.".format(chat.id),
                                                 parse_mode=ParseMode.MARKDOWN)
 
         else:
-            update.effective_message.reply_text("This group's id is `{}`.".format(chat.id),
+            update.effective_message.reply_text("Grubun ID'si `{}`.".format(chat.id),
                                                 parse_mode=ParseMode.MARKDOWN)
 
 
@@ -228,38 +228,38 @@ def info(bot: Bot, update: Update, args: List[str]):
     elif not msg.reply_to_message and (not args or (
             len(args) >= 1 and not args[0].startswith("@") and not args[0].isdigit() and not msg.parse_entities(
         [MessageEntity.TEXT_MENTION]))):
-        msg.reply_text("I can't extract a user from this.")
+        msg.reply_text("Bir kullanıcıyı bundan çıkaramıyorum.")
         return
 
     else:
         return
 
-    text = "<b>User info</b>:" \
+    text = "<b>Kullanıcı bilgisi</b>:" \
            "\nID: <code>{}</code>" \
-           "\nFirst Name: {}".format(user.id, html.escape(user.first_name))
+           "\nİlk İsmi: {}".format(user.id, html.escape(user.first_name))
 
     if user.last_name:
-        text += "\nLast Name: {}".format(html.escape(user.last_name))
+        text += "\nSoyadı: {}".format(html.escape(user.last_name))
 
     if user.username:
-        text += "\nUsername: @{}".format(html.escape(user.username))
+        text += "\nKullanıcı adı: @{}".format(html.escape(user.username))
 
-    text += "\nPermanent user link: {}".format(mention_html(user.id, "link"))
+    text += "\nKalıcı kullanıcı bağlantısı: {}".format(mention_html(user.id, "link"))
 
     if user.id == OWNER_ID:
-        text += "\n\nThis person is my owner - I would never do anything against them!"
+        text += "\n\nBu kişi benim sahibim - Ona karşı hiçbir şey yapmam.!"
     else:
         if user.id in SUDO_USERS:
-            text += "\nThis person is one of my sudo users! " \
-                    "Nearly as powerful as my owner - so watch it."
+            text += "\nBu kişi benim sudo kullanıcılarımdan biri! " \
+                    "Sahibim kadar güçlü - yani dikkatli ol."
         else:
             if user.id in SUPPORT_USERS:
-                text += "\nThis person is one of my support users! " \
-                        "Not quite a sudo user, but can still gban you off the map."
+                text += "\nBu kişi destek kullanıcılarımdan biri! " \
+                        "Tam bir sudo kullanıcısı değil, ama hala sizi haritadan silebilir."
 
             if user.id in WHITELIST_USERS:
-                text += "\nThis person has been whitelisted! " \
-                        "That means I'm not allowed to ban/kick them."
+                text += "\nBu kişi beyaz listeye alındı! " \
+                        "Bu onları yasaklamam/gruptan atmam anlamına geliyor."
 
     for mod in USER_INFO:
         mod_info = mod.__user_info__(user.id).strip()
@@ -273,7 +273,7 @@ def info(bot: Bot, update: Update, args: List[str]):
 def get_time(bot: Bot, update: Update, args: List[str]):
     location = " ".join(args)
     if location.lower() == bot.first_name.lower():
-        update.effective_message.reply_text("Its always banhammer time for me!")
+        update.effective_message.reply_text("Benim için her zaman ban zamanı!")
         bot.send_sticker(update.effective_chat.id, BAN_STICKER)
         return
 
@@ -319,34 +319,34 @@ def echo(bot: Bot, update: Update):
 
 
 MARKDOWN_HELP = """
-Markdown is a very powerful formatting tool supported by telegram. {} has some enhancements, to make sure that \
-saved messages are correctly parsed, and to allow you to create buttons.
+Markdown, telegramın desteklediği çok güçlü bir formatlama aracıdır. {} emin olmak için bazı geliştirmeler var \
+kaydedilen mesajlar doğru şekilde ayrıştırılır ve düğmeler oluşturmanıza izin verir.
 
-- <code>_italic_</code>: wrapping text with '_' will produce italic text
-- <code>*bold*</code>: wrapping text with '*' will produce bold text
-- <code>`code`</code>: wrapping text with '`' will produce monospaced text, also known as 'code'
+- <code>_italic_</code>: '_' ile metin oluşturma italik metin üretecek
+- <code>*bold*</code>: '*' ile metin oluşturma, kalın metin üretecek
+- <code>`code`</code>: metni ``` 'ile sarmalarken,'kod'olarak da bilinen tek aralıklı metin üretecektir
 - <code>[sometext](someURL)</code>: this will create a link - the message will just show <code>sometext</code>, \
 and tapping on it will open the page at <code>someURL</code>.
 EG: <code>[test](example.com)</code>
 
-- <code>[buttontext](buttonurl:someURL)</code>: this is a special enhancement to allow users to have telegram \
-buttons in their markdown. <code>buttontext</code> will be what is displayed on the button, and <code>someurl</code> \
-will be the url which is opened.
-EG: <code>[This is a button](buttonurl:example.com)</code>
+- <code>[buttontext](buttonurl:someURL)</code>: Bu kullanıcıların telegramın çekmesine izin veren özel bir geliştirmedir \
+düğmeleri <code>butonismi</code> düğme üzerinde görüntülenecek ne olacak, ve <code>link</code> \
+Açılan url olacak.
+EG: <code>[butonismi](buttonurl:link)</code>
 
-If you want multiple buttons on the same line, use :same, as such:
+Aynı satırda birden çok düğme istiyorsanız, şunu kullanın:
 <code>[one](buttonurl://example.com)
 [two](buttonurl://google.com:same)</code>
-This will create two buttons on a single line, instead of one button per line.
+Bu, satır başına bir düğme yerine, tek bir satırda iki düğme oluşturacaktır.
 
-Keep in mind that your message <b>MUST</b> contain some text other than just a button!
+<B> ZORUNLU </ b> mesajınızın sadece bir düğmeden başka bir metin içerdiğini unutmayın!
 """.format(dispatcher.bot.first_name)
 
 
 @run_async
 def markdown_help(bot: Bot, update: Update):
     update.effective_message.reply_text(MARKDOWN_HELP, parse_mode=ParseMode.HTML)
-    update.effective_message.reply_text("Try forwarding the following message to me, and you'll see!")
+    update.effective_message.reply_text("Aşağıdaki iletiyi bana iletmeyi deneyin ve göreceksiniz!")
     update.effective_message.reply_text("/save test This is a markdown test. _italics_, *bold*, `code`, "
                                         "[URL](example.com) [button](buttonurl:github.com) "
                                         "[button2](buttonurl://google.com:same)")
@@ -354,21 +354,21 @@ def markdown_help(bot: Bot, update: Update):
 
 @run_async
 def stats(bot: Bot, update: Update):
-    update.effective_message.reply_text("Current stats:\n" + "\n".join([mod.__stats__() for mod in STATS]))
+    update.effective_message.reply_text("Şuanki durumum:\n" + "\n".join([mod.__stats__() for mod in STATS]))
 
 
 # /ip is for private use
 __help__ = """
- - /id: get the current group id. If used by replying to a message, gets that user's id.
- - /runs: reply a random string from an array of replies.
- - /slap: slap a user, or get slapped if not a reply.
- - /time <place>: gives the local time at the given place.
- - /info: get information about a user.
-
- - /markdownhelp: quick summary of how markdown works in telegram - can only be called in private chats.
+ - /id: geçerli grup kimliğini al. Bir mesaja cevap vererek kullanılırsa, kullanıcının kimliğini alır.
+ - /runs: bir dizi yanıttan rastgele bir dizgeyi yanıtlayın.
+ - /slap: Bir kullanıcıyı tokatlamak veya cevap yoksa tokatlamak.
+ - /time <place>: Verilen yerde yerel zaman verir.
+ - /info: Bir kullanıcı hakkında bilgi almak.
+ 
+ - /markdownhelp: Markdown'un telgramda nasıl çalıştığının kısa bir özeti - sadece özel sohbetlerde kullanılabilir.
 """
 
-__mod_name__ = "Misc"
+__mod_name__ = "Çeşitli"
 
 ID_HANDLER = DisableAbleCommandHandler("id", get_id, pass_args=True)
 IP_HANDLER = CommandHandler("ip", get_bot_ip, filters=Filters.chat(OWNER_ID))
