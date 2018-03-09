@@ -68,7 +68,7 @@ def gban(bot: Bot, update: Update, args: List[str]):
 
     banner = update.effective_user  # type: Optional[User]
     send_to_list(bot, SUDO_USERS + SUPPORT_USERS,
-                 "{} is gbanning user {} "
+                 "{} Gbanlıyor. Gbanlanan kullanıcı: {} "
                  "because:\n{}".format(mention_html(banner.id, banner.first_name),
                                        mention_html(user_chat.id, user_chat.first_name), reason or "No reason given"),
                  html=True)
@@ -132,10 +132,10 @@ def ungban(bot: Bot, update: Update, args: List[str]):
 
     banner = update.effective_user  # type: Optional[User]
 
-    message.reply_text("Bana bir saniye ver. {} Banını kaldırıyorum, tamamen.".format(user_chat.first_name))
+    message.reply_text("Bana bir saniye ver. *{}* banını kaldırıyorum, tamamen.".format(user_chat.first_name))
 
     send_to_list(bot, SUDO_USERS + SUPPORT_USERS,
-                 "{} has ungbanned user {}".format(mention_html(banner.id, banner.first_name),
+                 "{} Ungbanlıyor. Ungbanlanan kullanıcı: {}".format(mention_html(banner.id, banner.first_name),
                                                    mention_html(user_chat.id, user_chat.first_name)),
                  html=True)
 
