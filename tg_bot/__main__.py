@@ -36,7 +36,7 @@ Ben birkaç eğlenceli ekstralar ile modüler bir grup yönetim botuyum! Bazı k
  - /donate: Bağış hakkında bilgi!
  - /settings:
    - Özel mesaj içerisinde: desteklenen tüm modüller için ayarlarınızı gönderecek.
-   - bir grup içerisinde: tüm sohbet ayarları ile sizi özel mesaj olarak gönderilecek.
+   - bir grup içerisinde: grubun tüm sohbet ayarları size özel mesaj olarak gönderilecek.
 {}
 Ve aşağıdan kontrol edebilirsin:
 """.format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nTüm komutlar / veya ! ile kullanılabilir.\n")
