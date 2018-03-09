@@ -210,7 +210,7 @@ __help__ = """
  - /adminlist: sohbetteki yöneticilerin listesi
 
 *Sadece yöneticiler:*
- - /pin: sessizce mesaja cevap verir - kullanıcılara not vermek için 'loud' veya 'notify' seçeneğini ekleyin.
+ - /pin: sessizce mesajı sabitler - kullanıcılara bildirim vermek için 'loud' veya 'notify' seçeneğini ekleyin.
  - /unpin: Şu anda sabitlenmiş mesajı kaldırır
  - /invitelink: Davet bağlantısını al
  - /promote: Yanıtlanan kullanıcı yönetici yapar
