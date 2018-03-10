@@ -60,7 +60,7 @@ def warn(user: User, chat: Chat, reason: str, message: Message, warner: User = N
 
     else:
         keyboard = InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Remove warn", callback_data="rm_warn({})".format(user.id))]])
+            [[InlineKeyboardButton("Uyarıyı kaldır", callback_data="rm_warn({})".format(user.id))]])
 
         reply = "{} {}/{} uyarıya sahip... Dikkatli ol!".format(mention_markdown(user.id, user.first_name), num_warns,
                                                              limit)
@@ -100,7 +100,7 @@ def button(bot: Bot, update: Update) -> str:
         res = sql.remove_warn(user_id, chat.id)
         if res:
             update.effective_message.edit_text(
-                "Warn removed by {}.".format(mention_markdown(user.id, user.first_name)),
+                "Uyarı {} tarafından kaldırıldı.".format(mention_markdown(user.id, user.first_name)),
                 parse_mode=ParseMode.MARKDOWN)
             user_member = chat.get_member(user_id)
             return "<b>{}:</b>" \
