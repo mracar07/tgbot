@@ -21,13 +21,13 @@ from tg_bot.modules.log_channel import loggable
 from tg_bot.modules.sql import warns_sql as sql
 
 WARN_HANDLER_GROUP = 9
-CURRENT_WARNING_FILTER_STRING = "*Current warning filters in this chat:*\n"
+CURRENT_WARNING_FILTER_STRING = "*Bu sohbetteki mevcut uyarı filtreleri:*\n"
 
 
 # Not async
 def warn(user: User, chat: Chat, reason: str, message: Message, warner: User = None) -> str:
     if is_user_admin(chat, user.id):
-        message.reply_text("Damn admins, can't even be warned!")
+        message.reply_text("Lanet yöneticiler, uyarılamazlar.!")
         return ""
 
     if warner:
@@ -41,11 +41,11 @@ def warn(user: User, chat: Chat, reason: str, message: Message, warner: User = N
         sql.reset_warns(user.id, chat.id)
         if soft_warn:  # kick
             chat.unban_member(user.id)
-            reply = "{} warnings, this user has been kicked!".format(limit)
+            reply = "{} uyarıya ulaştı, bu kullanıcı gruptan atıldı!".format(limit)
 
         else:  # ban
             chat.kick_member(user.id)
-            reply = "{} warnings, this user has been banned!".format(limit)
+            reply = "{} uyarıya ulaştı, bu kullanıcı gruptan yasaklandı!".format(limit)
 
         message.bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie sticker
         keyboard = []
@@ -62,10 +62,10 @@ def warn(user: User, chat: Chat, reason: str, message: Message, warner: User = N
         keyboard = InlineKeyboardMarkup(
             [[InlineKeyboardButton("Remove warn", callback_data="rm_warn({})".format(user.id))]])
 
-        reply = "{} has {}/{} warnings... watch out!".format(mention_markdown(user.id, user.first_name), num_warns,
+        reply = "{} {}/{} uyarıya sahip... Dikkatli ol!".format(mention_markdown(user.id, user.first_name), num_warns,
                                                              limit)
         if reason:
-            reply += "\nReason for last warn:\n{}".format(escape_markdown(reason))
+            reply += "\nSon uyarının sebebi:\n{}".format(escape_markdown(reason))
 
         reason = "<b>{}:</b>" \
                  "\n#WARN" \
@@ -129,7 +129,7 @@ def warn_user(bot: Bot, update: Update, args: List[str]) -> str:
         else:
             return warn(chat.get_member(user_id).user, chat, reason, message, warner)
     else:
-        message.reply_text("No user was designated!")
+        message.reply_text("Hiçbir kullanıcı belirlenmedi!")
     return ""
 
 
@@ -145,7 +145,7 @@ def reset_warns(bot: Bot, update: Update, args: List[str]) -> str:
     user_id = extract_user(message, args)
     if user_id:
         sql.reset_warns(user_id, chat.id)
-        message.reply_text("Warnings have been reset!")
+        message.reply_text("Uyarılar sıfırlandı!")
         warned = chat.get_member(user_id).user
         return "<b>{}:</b>" \
                "\n#RESETWARNS" \
@@ -154,7 +154,7 @@ def reset_warns(bot: Bot, update: Update, args: List[str]) -> str:
                                           mention_html(user.id, user.first_name),
                                           mention_html(warned.id, warned.first_name))
     else:
-        message.reply_text("No user has been designated!")
+        message.reply_text("Hiçbir kullanıcı belirlenmedi!")
     return ""
 
 
@@ -170,7 +170,7 @@ def warns(bot: Bot, update: Update, args: List[str]):
         limit, soft_warn = sql.get_warn_setting(chat.id)
 
         if reasons:
-            text = "This user has {}/{} warnings, for the following reasons:".format(num_warns, limit)
+            text = "Bu kullanıcı {}/{} uyarıya sahip, aşağıdaki sebeplerden dolayı:".format(num_warns, limit)
             for reason in reasons:
                 text += "\n - {}".format(reason)
 
@@ -179,9 +179,9 @@ def warns(bot: Bot, update: Update, args: List[str]):
                 update.effective_message.reply_text(msg)
         else:
             update.effective_message.reply_text(
-                "User has {}/{} warnings, but no reasons for any of them.".format(num_warns, limit))
+                "Bu kullanıcı {}/{} uyarıya sahip, ama hiçbir zaman sebep belirtilmemiş.".format(num_warns, limit))
     else:
-        update.effective_message.reply_text("This user hasn't got any warnings!")
+        update.effective_message.reply_text("Bu kullanıcının herhangi bir uyarısı yok!")
 
 
 # Dispatcher handler stop - do not async
@@ -212,7 +212,7 @@ def add_warn_filter(bot: Bot, update: Update):
 
     sql.add_warn_filter(chat.id, keyword, content)
 
-    update.effective_message.reply_text("Warn handler added for '{}'!".format(keyword))
+    update.effective_message.reply_text("Otomatik uyarı '{}' kelimesi için aktif!".format(keyword))
     raise DispatcherHandlerStop
 
 
@@ -226,17 +226,17 @@ def remove_warn_filter(bot: Bot, update: Update, args: List[str]):
     chat_filters = sql.get_chat_warn_filters(chat.id)
 
     if not chat_filters:
-        update.effective_message.reply_text("No warning filters are active here!")
+        update.effective_message.reply_text("Burada hiçbir uyarı filtresi aktif değil!")
         return
 
     for filt in chat_filters:
         if filt.chat_id == str(chat.id) and filt.keyword == args[0]:
             sql.remove_warn_filter(chat.id, args[0])
-            update.effective_message.reply_text("Yep, I'll stop warning people for that.")
+            update.effective_message.reply_text("Evet, bunun için insanları uyarmayı bırakacağım.")
             raise DispatcherHandlerStop
 
-    update.effective_message.reply_text("That's not a current warning filter - run /warnlist for all \
-    active warning filters.")
+    update.effective_message.reply_text("Bu geçerli bir uyarı filtresi değil - görmek için /warnlist \
+    komutunu çalıştırın.")
 
 
 @run_async
@@ -245,7 +245,7 @@ def list_warn_filters(bot: Bot, update: Update):
     all_handlers = sql.get_chat_warn_filters(chat.id)
 
     if not all_handlers:
-        update.effective_message.reply_text("No warning filters are active here!")
+        update.effective_message.reply_text("Burada hiçbir uyarı filtresi aktif değil!")
         return
 
     filter_list = CURRENT_WARNING_FILTER_STRING
@@ -290,7 +290,7 @@ def set_warn_limit(bot: Bot, update: Update, args: List[str]) -> str:
     if args:
         if args[0].isdigit():
             if int(args[0]) < 3:
-                msg.reply_text("The minimum warn limit is 3!")
+                msg.reply_text("Minimum uyarı limiti 3!")
             else:
                 sql.set_warn_limit(chat.id, int(args[0]))
                 msg.reply_text("Updated the warn limit to {}".format(args[0]))
@@ -300,11 +300,11 @@ def set_warn_limit(bot: Bot, update: Update, args: List[str]) -> str:
                        "\nSet the warn limit to <code>{}</code>".format(html.escape(chat.title),
                                                                         mention_html(user.id, user.first_name), args[0])
         else:
-            msg.reply_text("Give me a number as an arg!")
+            msg.reply_text("Ayarlamam için bana bir sayı ver!")
     else:
         limit, soft_warn = sql.get_warn_setting(chat.id)
 
-        msg.reply_text("The current warn limit is {}".format(limit))
+        msg.reply_text("Mevcut uyarı sınırı {}".format(limit))
     return ""
 
 
@@ -318,7 +318,7 @@ def set_warn_strength(bot: Bot, update: Update, args: List[str]):
     if args:
         if args[0].lower() in ("on", "yes"):
             sql.set_warn_strength(chat.id, False)
-            msg.reply_text("Too many warns will now result in a ban!")
+            msg.reply_text("Çok fazla uyarı, artık yasakla sonuçlanacak!")
             return "<b>{}:</b>\n" \
                    "<b>Admin:</b> {}\n" \
                    "Has enabled strong warns. Users will be banned.".format(html.escape(chat.title),
@@ -326,7 +326,7 @@ def set_warn_strength(bot: Bot, update: Update, args: List[str]):
 
         elif args[0].lower() in ("off", "no"):
             sql.set_warn_strength(chat.id, True)
-            msg.reply_text("Too many warns will now result in a kick! Users will be able to join again after.")
+            msg.reply_text("Çok fazla uyarı artık gruptan atılma ile sonuçlanacak! Kullanıcılar sonra tekrar katılabilecektir.")
             return "<b>{}:</b>\n" \
                    "<b>Admin:</b> {}\n" \
                    "Has disabled strong warns. Users will only be kicked.".format(html.escape(chat.title),
@@ -334,14 +334,14 @@ def set_warn_strength(bot: Bot, update: Update, args: List[str]):
                                                                                                user.first_name))
 
         else:
-            msg.reply_text("I only understand on/yes/no/off!")
+            msg.reply_text("ben sadece on/yes/no/off komutlarını anlıyorum!")
     else:
         limit, soft_warn = sql.get_warn_setting(chat.id)
         if soft_warn:
-            msg.reply_text("Warns are currently set to *kick* users when they exceed the limits.",
+            msg.reply_text("Uyarılar şu anda limitleri aştığında *gruptan at* olarak ayarlandı.",
                            parse_mode=ParseMode.MARKDOWN)
         else:
-            msg.reply_text("Warns are currently set to *ban* users when they exceed the limits.",
+            msg.reply_text("Uyarılar şu anda limitleri aştığında *gruptan yasakla* olarak ayarlandı.",
                            parse_mode=ParseMode.MARKDOWN)
     return ""
 
@@ -370,20 +370,20 @@ def __chat_settings__(chat_id, user_id):
 
 
 __help__ = """
- - /warns <userhandle>: get a user's number, and reason, of warnings.
- - /warnlist: list of all current warning filters
+ - /warns <kullanıcıadı>: Bir kullanıcının uyarılarını al.
+ - /warnlist: tüm geçerli uyarı filtrelerinin listesi
 
-*Admin only:*
- - /warn <userhandle>: warn a user. After 3 warns, the user will be banned from the group. Can also be used as a reply.
- - /resetwarn <userhandle>: reset the warnings for a user. Can also be used as a reply.
- - /addwarn <keyword> <reply message>: set a warning filter on a certain keyword. If you want your keyword to \
-be a sentence, encompass it with quotes, as such: `/addwarn "very angry" This is an angry user`. 
- - /nowarn <keyword>: stop a warning filter
- - /warnlimit <num>: set the warning limit
- - /strongwarn <on/yes/off/no>: If set to on, exceeding the warn limit will result in a ban. Else, will just kick.
+*Sadece yöneticiler:*
+ - /warn <userhandle>: Kullanıcıyı uyar. 3 uyarmadan sonra, kullanıcı gruptan yasaklanacak. Bir cevap olarak da kullanılabilir.
+ - /resetwarn <userhandle>: Bir kullanıcı için uyarıları sıfırlayın. Bir cevap olarak da kullanılabilir.
+ - /addwarn <keyword> <reply message>: Belirli bir anahtar kelime üzerinde bir uyarı filtresi ayarlayın. Anahtar kelimenizi \
+bir cümle olarak tırnak içine alın, Yani: `/addwarn "küfür küfür" Küfür yasak`. 
+ - /nowarn <keyword>: uyarı filtresini durdur
+ - /warnlimit <num>: uyarı limitini ayarla
+ - /strongwarn <on/yes/off/no>: Açık olarak ayarlanmışsa, uyarı limitini aşmak bir yasakla sonuçlanır. kapalı olarak ayarlanmışsa, gruptan atacak.
 """
 
-__mod_name__ = "Warnings"
+__mod_name__ = "Uyarılar"
 
 WARN_HANDLER = CommandHandler("warn", warn_user, pass_args=True, filters=Filters.group)
 RESET_WARN_HANDLER = CommandHandler("resetwarn", reset_warns, pass_args=True, filters=Filters.group)
