@@ -93,7 +93,7 @@ if is_module_loaded(FILENAME):
             result = ""
             for cmd in set(DISABLE_CMDS + DISABLE_OTHER):
                 result += " - `{}`\n".format(cmd)
-            update.effective_message.reply_text("Aşağıdaki komutlar değiştirilebilir:\n{}".format(result),
+            update.effective_message.reply_text("Aşağıdaki komutlar engellenebilir:\n{}".format(result),
                                                 parse_mode=ParseMode.MARKDOWN)
         else:
             update.effective_message.reply_text("Hiçbir komut devre dışı bırakılamaz.")
