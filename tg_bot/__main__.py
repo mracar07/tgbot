@@ -205,8 +205,10 @@ def help_button(bot: Bot, update: Update):
     except BadRequest as excp:
         if excp.message == "Message is not modified":
             pass
+        elif excp.message == "Query_id_invalid":
+            pass
         else:
-            raise
+            LOGGER.exception("Exception in help buttons. %s", str(query.data))
 
 
 @run_async
@@ -316,8 +318,10 @@ def settings_button(bot: Bot, update: Update):
     except BadRequest as excp:
         if excp.message == "Message is not modified":
             pass
+        elif excp.message == "Query_id_invalid":
+            pass
         else:
-            raise
+            LOGGER.exception("Exception in settings buttons. %s", str(query.data))
 
 
 @run_async
