@@ -48,8 +48,8 @@ def send(update, message, keyboard, backup_message):
     except BadRequest as excp:
         if excp.message == "Button_url_invalid":
             update.effective_message.reply_text(markdown_parser(backup_message +
-                                                                "\nNot: Mevcut mesajın içindeki bir butonda geçersiz bir URL var "
-                                                                "one of its buttons. Please update."),
+                                                                "\nNot: Mevcut mesajın içindeki bir butonda geçersiz bir URL "
+                                                                "var"),
                                                 parse_mode=ParseMode.MARKDOWN)
         elif excp.message == "Unsupported url protocol":
             update.effective_message.reply_text(markdown_parser(backup_message +
