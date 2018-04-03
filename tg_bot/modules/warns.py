@@ -216,36 +216,25 @@ def add_warn_filter(bot: Bot, update: Update):
 
 
 @user_admin
-def remove_warn_filter(bot: Bot, update: Update):
+def remove_warn_filter(bot: Bot, update: Update, args: List[str]):
     chat = update.effective_chat  # type: Optional[Chat]
-    msg = update.effective_message  # type: Optional[Message]
 
-    args = msg.text.split(None, 1)  # use python's maxsplit to separate Cmd, keyword, and reply_text
-
-    if len(args) < 2:
+    if len(args) < 1:
         return
-
-    extracted = split_quotes(args[1])
-
-    if len(extraced) < 1:
-        return
-
-    to_remove = extracted[0]
-
 
     chat_filters = sql.get_chat_warn_filters(chat.id)
 
     if not chat_filters:
-        msg.reply_text("Burada hiçbir uyarı filtresi aktif değil!")
+        update.effective_message.reply_text("Burada hiçbir uyarı filtresi aktif değil!")
         return
 
     for filt in chat_filters:
-        if filt.chat_id == str(chat.id) and filt.keyword == to_remove:
-            sql.remove_warn_filter(chat.id, to_remove)
-            msg.reply_text("Evet, bunun için insanları uyarmayı bırakacağım.")
+        if filt.chat_id == str(chat.id) and filt.keyword == args[0]:
+            sql.remove_warn_filter(chat.id, args[0])
+            update.effective_message.reply_text("Evet, bunun için insanları uyarmayı bırakacağım.")
             raise DispatcherHandlerStop
 
-    msg.reply_text("Bu geçerli bir uyarı filtresi değil - görmek için /warnlist \
+    update.effective_message.reply_text("Bu geçerli bir uyarı filtresi değil - görmek için /warnlist \
     komutunu çalıştırın.")
 
 
@@ -400,7 +389,7 @@ RESET_WARN_HANDLER = CommandHandler("resetwarn", reset_warns, pass_args=True, fi
 CALLBACK_QUERY_HANDLER = CallbackQueryHandler(button, pattern=r"rm_warn")
 MYWARNS_HANDLER = DisableAbleCommandHandler("warns", warns, pass_args=True, filters=Filters.group)
 ADD_WARN_HANDLER = CommandHandler("addwarn", add_warn_filter, filters=Filters.group)
-RM_WARN_HANDLER = CommandHandler(["nowarn", "stopwarn"], remove_warn_filter, filters=Filters.group)
+RM_WARN_HANDLER = CommandHandler(["nowarn", "stopwarn"], remove_warn_filter, pass_args=True, filters=Filters.group)
 LIST_WARN_HANDLER = DisableAbleCommandHandler("warnlist", list_warn_filters, filters=Filters.group)
 WARN_FILTER_HANDLER = MessageHandler(CustomFilters.has_text & Filters.group, reply_filter)
 WARN_LIMIT_HANDLER = CommandHandler("warnlimit", set_warn_limit, pass_args=True, filters=Filters.group)
