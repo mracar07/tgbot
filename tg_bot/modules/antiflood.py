@@ -33,8 +33,8 @@ def check_flood(bot: Bot, update: Update) -> str:
     if should_ban:
         try:
             chat.kick_member(user.id)
-            msg.reply_text("Sel felaketini doğal afetlere bırakmak istiyorum. Ama sen sadece bir "
-                           "hayal kırıklığısın. Defol.")
+            msg.reply_text("Kullanıcı flood yaptığı için gruptan "
+                           "atıldı.")
 
             return "<b>{}:</b>" \
                    "\n#BANNED" \
@@ -43,7 +43,7 @@ def check_flood(bot: Bot, update: Update) -> str:
                                                  mention_html(user.id, user.first_name))
 
         except BadRequest:
-            msg.reply_text("Burada insanları atmama izin ver! O zamana kadar, antiflood'u devre dışı bırakacağım.")
+            msg.reply_text("Burada insanları atma yetkisini ver! O zamana kadar, antiflood'u devre dışı bırakacağım.")
             sql.set_flood(chat.id, 0)
             return "<b>{}:</b>" \
                    "\n#INFO" \
