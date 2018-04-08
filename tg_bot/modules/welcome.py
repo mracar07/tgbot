@@ -86,7 +86,7 @@ def new_member(bot: Bot, update: Update):
         for new_mem in new_members:
             # Give the owner a special welcome
             if new_mem.id == OWNER_ID:
-                update.effective_message.reply_text("Master is in the houseeee, let's get this party started!")
+                update.effective_message.reply_text("Sahibim geldi, Parti başlasın!")
                 continue
 
             # Don't welcome yourself
@@ -153,7 +153,7 @@ def left_member(bot: Bot, update: Update):
 
             # Give the owner a special goodbye
             if left_mem.id == OWNER_ID:
-                update.effective_message.reply_text("RIP Master")
+                update.effective_message.reply_text("Görüşürüz patron")
                 return
 
             # if media goodbye, use appropriate function for it
@@ -199,7 +199,7 @@ def welcome(bot: Bot, update: Update, args: List[str]):
     if len(args) == 0:
         pref, welcome_m, welcome_type = sql.get_welc_pref(chat.id)
         update.effective_message.reply_text(
-            "This chat has it's welcome setting set to: `{}`.\n*The welcome message "
+            "Bu sohbet şuna ayarlandı: `{}`.\n*Şuanki karşılama mesajı "
             "(not filling the {{}}) is:*".format(pref),
             parse_mode=ParseMode.MARKDOWN)
 
@@ -224,7 +224,7 @@ def welcome(bot: Bot, update: Update, args: List[str]):
 
         else:
             # idek what you're writing, say yes or no
-            update.effective_message.reply_text("I understand 'on/yes' or 'off/no' only!")
+            update.effective_message.reply_text("Ben sadece 'on/yes' veya 'off/no' anlıyorum!")
 
 
 @run_async
@@ -236,7 +236,7 @@ def goodbye(bot: Bot, update: Update, args: List[str]):
         noformat = args and args[0] == "noformat"
         pref, goodbye_m, goodbye_type = sql.get_gdbye_pref(chat.id)
         update.effective_message.reply_text(
-            "This chat has it's goodbye setting set to: `{}`.\n*The goodbye  message "
+            "Bu sohbet için ayrılma mesajı: `{}`.\n*Şuanki ayrılma mesajı "
             "(not filling the {{}}) is:*".format(pref),
             parse_mode=ParseMode.MARKDOWN)
 
@@ -262,15 +262,15 @@ def goodbye(bot: Bot, update: Update, args: List[str]):
     elif len(args) >= 1:
         if args[0].lower() in ("on", "yes"):
             sql.set_gdbye_preference(str(chat.id), True)
-            update.effective_message.reply_text("I'll be sorry when people leave!")
+            update.effective_message.reply_text("Insanlar ayrıldığında arkalarından üzüleceğim!")
 
         elif args[0].lower() in ("off", "no"):
             sql.set_gdbye_preference(str(chat.id), False)
-            update.effective_message.reply_text("They leave, they're dead to me.")
+            update.effective_message.reply_text("Eğer ayrılırlarsa benim için ölürler.")
 
         else:
             # idek what you're writing, say yes or no
-            update.effective_message.reply_text("I understand 'on/yes' or 'off/no' only!")
+            update.effective_message.reply_text("ben sadece 'on/yes' veya 'off/no' anlıyorum!")
 
 
 @run_async
@@ -318,11 +318,11 @@ def set_welcome(bot: Bot, update: Update) -> str:
         data_type = sql.Types.VIDEO
 
     else:
-        msg.reply_text("You didn't specify what to reply with!")
+        msg.reply_text("Neyle yanıt vereceğinizi belirtmediniz!")
         return ""
 
     sql.set_custom_welcome(chat.id, content, data_type, buttons)
-    update.effective_message.reply_text("Successfully set custom welcome message!")
+    update.effective_message.reply_text("Özel karşılama mesajı başarıyla ayarlandı!")
 
     return "<b>{}:</b>" \
            "\n#SET_WELCOME" \
@@ -338,7 +338,7 @@ def reset_welcome(bot: Bot, update: Update) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     sql.set_custom_welcome(chat.id, sql.DEFAULT_WELCOME, sql.Types.TEXT)
-    update.effective_message.reply_text("Successfully reset welcome message to default!")
+    update.effective_message.reply_text("Karşılama mesajını varsayılan olarak sıfırlandı!")
     return "<b>{}:</b>" \
            "\n#RESET_WELCOME" \
            "\n<b>Admin:</b> {}" \
@@ -391,11 +391,11 @@ def set_goodbye(bot: Bot, update: Update) -> str:
         data_type = sql.Types.VIDEO
 
     else:
-        msg.reply_text("You didn't specify what to reply with!")
+        msg.reply_text("Ne cevap vereceğinizi belirtmediniz!")
         return ""
 
     sql.set_custom_gdbye(chat.id, content, data_type, buttons)
-    update.effective_message.reply_text("Successfully set custom goodbye message!")
+    update.effective_message.reply_text("Özel hoşçakal mesajı başarıyla ayarlandı!")
     return "<b>{}:</b>" \
            "\n#SET_GOODBYE" \
            "\n<b>Admin:</b> {}" \
@@ -435,7 +435,7 @@ def clean_welcome(bot: Bot, update: Update, args: List[str]) -> str:
 
     if args[0].lower() in ("on", "yes"):
         sql.set_clean_welcome(str(chat.id), True)
-        update.effective_message.reply_text("I'll try to delete old welcome messages!")
+        update.effective_message.reply_text("Ne istediğini biliyorum patron ;)!")
         return "<b>{}:</b>" \
                "\n#CLEAN_WELCOME" \
                "\n<b>Admin:</b> {}" \
@@ -526,7 +526,7 @@ __help__ = """
  - /welcomehelp: view more formatting information for custom welcome/goodbye messages.
 """.format(WELC_HELP_TXT)
 
-__mod_name__ = "Welcomes/Goodbyes"
+__mod_name__ = "Hoşgeldin/Veda Mesajları"
 
 NEW_MEM_HANDLER = MessageHandler(Filters.status_update.new_chat_members, new_member)
 LEFT_MEM_HANDLER = MessageHandler(Filters.status_update.left_chat_member, left_member)
